@@ -1,19 +1,4 @@
-<?php
-require_once 'RomanNumeralsConverter.php'; 
 
-$converter = new RomanNumeralsConverter();
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $arabicNumber = filter_input(INPUT_POST, 'arabicNumber', FILTER_VALIDATE_INT);
-    if ($arabicNumber !== false && $arabicNumber >= 1 && $arabicNumber <= 3999) {
-        $romanNumeral = $converter->convertToRoman($arabicNumber);
-        echo '<div class="container pt-5">La représentation romaine de ' . $arabicNumber . ' est : ' . $romanNumeral . '</div>';
-    } else {
-        echo "Entrez un nombre arabe valide (1-3999).";
-    }
-}
-
-?>
 
 <!DOCTYPE html>
 <html>
@@ -27,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Convertisseur de nombres romains</title>
 </head>
 <body>
+<?php include 'nav.html';?>
     <div class="container pt-5">
         <form method="POST">
             <div class="mb-3 p-5 bg-light">
@@ -38,3 +24,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </body>
 </html>
+<?php
+require_once 'RomanNumeralsConverter.php'; 
+
+$converter = new RomanNumeralsConverter();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $arabicNumber = filter_input(INPUT_POST, 'arabicNumber', FILTER_VALIDATE_INT);
+    if ($arabicNumber !== false && $arabicNumber >= 1 && $arabicNumber <= 3999) {
+        $romanNumeral = $converter->convertToRoman($arabicNumber);
+        echo '<div class="container pt-5">La représentation romaine de ' . $arabicNumber . ' est : ' . $romanNumeral . '</div>';
+    } else {
+        echo "Entrez un nombre arabe valide (1-3999).";
+    }
+    if ($arabicNumber === false) {
+        echo "Erreur : La saisie n'est pas un nombre arabe valide.";
+    } 
+}
+
+?>

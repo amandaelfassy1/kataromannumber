@@ -2,13 +2,19 @@
 <html>
 <head>
     <title>Convertir un nombre romain en nombre arabe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Convertisseur de nombres romains en nombres arabes</h1>
-    <form action="" method="post">
-        Entrez un nombre romain : <input type="text" name="romanNumber">
-        <input type="submit" value="Convertir">
-    </form>
+    <?php include 'nav.html';?>
+    <div class="container pt-5">
+        <div class="mb-3 p-5 bg-light">
+            <form action="" method="post">
+                <label class="form-label">Entrez un nombre romain</label>
+                <input type="text" class="form-control" name="romanNumber">
+                <input type="submit" class="mt-3 btn btn-primary" value="Convertir">
+            </form>
+        <div>
+    <div>
     <?php
     function romanToArabic($romanNumber) {
         $romanNumerals = array(
@@ -30,12 +36,17 @@
         $arabicNumber = 0;
         
         while (!empty($romanNumber)) {
+            $found = false;
             foreach ($romanNumerals as $roman => $arabic) {
                 if (strpos($romanNumber, $roman) === 0) {
                     $arabicNumber += $arabic;
                     $romanNumber = substr($romanNumber, strlen($roman));
+                    $found = true;
                     break;
                 }
+            }
+            if (!$found) {
+                return false; // Retourner une valeur indiquant une erreur
             }
         }
         
@@ -45,7 +56,11 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $romanNumber = strtoupper($_POST["romanNumber"]);
         $arabicNumber = romanToArabic($romanNumber);
-        echo "Le nombre romain <b>$romanNumber</b> correspond au nombre arabe <b>$arabicNumber</b>.";
+        if ($arabicNumber === false) {
+            echo "Erreur : La saisie n'est pas un nombre romain valide.";
+        } else {
+            echo '<div class="container pt-5">Le nombre romain <b>' .$romanNumber.' </b> correspond au nombre arabe <b>'.$arabicNumber.'</b>.';
+        }
     }
     ?>
 </body>
